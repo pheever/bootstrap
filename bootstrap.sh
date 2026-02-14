@@ -49,9 +49,9 @@ for attempt in 1 2 3; do
     echo ""
 
     if [ "$NEED_LOGIN" = true ]; then
-        BW_SESSION=$(BW_MASTER_PASS="$BW_MASTER_PASS" bw login "$BW_EMAIL" --passwordenv BW_MASTER_PASS --raw 2>/dev/null) || true
+        BW_SESSION=$(BW_MASTER_PASS="$BW_MASTER_PASS" bw login "$BW_EMAIL" --passwordenv BW_MASTER_PASS --raw) || true
     else
-        BW_SESSION=$(BW_MASTER_PASS="$BW_MASTER_PASS" bw unlock --passwordenv BW_MASTER_PASS --raw 2>/dev/null) || true
+        BW_SESSION=$(BW_MASTER_PASS="$BW_MASTER_PASS" bw unlock --passwordenv BW_MASTER_PASS --raw) || true
     fi
     unset BW_MASTER_PASS
 
