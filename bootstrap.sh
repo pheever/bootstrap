@@ -74,9 +74,9 @@ trap 'bw lock 2>/dev/null; unset BW_SESSION' EXIT
 echo "Bitwarden unlocked."
 echo ""
 
-# GitHub auth — device code flow (user opens browser)
+# GitHub auth — device code flow, request all scopes upfront
 echo "Authenticating GitHub CLI..."
-gh auth login -h github.com -p ssh -w
+gh auth login -h github.com -p ssh -w -s admin:public_key,write:gpg_key
 echo ""
 
 # ─── Derive user config from GitHub API ───

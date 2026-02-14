@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Non-interactive: expects gh already authenticated via bootstrap.sh
-
-# Refresh scopes needed for SSH key upload
-echo "Refreshing OAuth scopes (admin:public_key)..."
-gh auth refresh -h github.com -s admin:public_key
+# Non-interactive: expects gh already authenticated with all scopes via bootstrap.sh
 
 # Upload SSH public key to GitHub
 SSH_KEY="$HOME/.ssh/github_ed25519.pub"
@@ -24,9 +20,5 @@ fi
 # Switch to SSH protocol
 echo "Switching to SSH authentication..."
 gh config set git_protocol ssh -h github.com
-
-# Refresh scopes needed for GPG key upload
-echo "Refreshing OAuth scopes (write:gpg_key)..."
-gh auth refresh -h github.com -s write:gpg_key
 
 echo "GitHub CLI configured for SSH."
