@@ -9,7 +9,8 @@ Uses [GNU Stow](https://www.gnu.org/software/stow/) for dotfile management, [Bit
 On a brand new Ubuntu WSL distro:
 
 ```bash
-sudo apt-get update && sudo apt-get install -y curl git
+sudo add-apt-repository -y ppa:wslutilities/wslu
+sudo apt-get update && sudo apt-get install -y curl git wslu
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 brew install gh
@@ -19,7 +20,7 @@ cd ~/source/github.com/pheever/bootstrap
 bash bootstrap.sh
 ```
 
-> **Note:** After the distro is first installed in Windows, restart it before running the bootstrap (close the terminal and reopen it).
+> ⚠️ **Note:** After the distro is first installed in Windows, restart it before running the bootstrap (close the terminal and reopen it).
 
 ## What It Does
 
