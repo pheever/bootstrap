@@ -35,12 +35,26 @@ echo ""
 
 # Bitwarden login — master password stays in memory only
 echo "Logging in to Bitwarden..."
-read -rsp "Bitwarden master password: " BW_MASTER_PASS
-echo ""
+for attempt in 1 2 3; do
+    read -rsp "Bitwarden master password: " BW_MASTER_PASS
+    echo ""
 
-BW_SESSION=$(BW_MASTER_PASS="$BW_MASTER_PASS" bw login --passwordenv BW_MASTER_PASS --raw 2>/dev/null) \
-    || BW_SESSION=$(BW_MASTER_PASS="$BW_MASTER_PASS" bw unlock --passwordenv BW_MASTER_PASS --raw 2>/dev/null)
-unset BW_MASTER_PASS
+    BW_SESSION=$(BW_MASTER_PASS="$BW_MASTER_PASS" bw login --passwordenv BW_MASTER_PASS --raw 2>/dev/null) \
+        || BW_SESSION=$(BW_MASTER_PASS="$BW_MASTER_PASS" bw unlock --passwordenv BW_MASTER_PASS --raw 2>/dev/null) \
+        || true
+    unset BW_MASTER_PASS
+
+    if [ -n "${BW_SESSION:-}" ]; then
+        break
+    fi
+
+    if [ "$attempt" -lt 3 ]; then
+        echo "Invalid master password. Try again ($((3 - attempt)) attempts remaining)."
+    else
+        echo "ERROR: Failed to authenticate with Bitwarden after 3 attempts."
+        exit 1
+    fi
+done
 export BW_SESSION
 
 # Cleanup trap: lock vault and clear session on exit
