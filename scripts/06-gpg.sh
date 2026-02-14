@@ -29,8 +29,8 @@ else
     echo "Retrieving GPG key from Bitwarden..."
     ITEM=$(bw get item "${BW_GPG_ITEM:-WSL GPG Key}")
 
-    PRIVATE_KEY=$(echo "$ITEM" | jq -r '.fields[] | select(.name == "private_key") | .value')
-    KEY_ID=$(echo "$ITEM" | jq -r '.fields[] | select(.name == "key_id") | .value')
+    PRIVATE_KEY=$(echo "$ITEM" | yq -r '.fields[] | select(.name == "private_key") | .value')
+    KEY_ID=$(echo "$ITEM" | yq -r '.fields[] | select(.name == "key_id") | .value')
 
     if [ -z "$PRIVATE_KEY" ] || [ -z "$KEY_ID" ]; then
         echo "ERROR: Could not retrieve GPG key from Bitwarden."
@@ -41,14 +41,14 @@ else
     fi
 
     # Import the private key (passphrase via fd 3 to avoid process-list leak)
-    PASS_ITEM_ID=$(echo "$ITEM" | jq -r '.fields[] | select(.name == "passphrase_item_id") | .value')
+    PASS_ITEM_ID=$(echo "$ITEM" | yq -r '.fields[] | select(.name == "passphrase_item_id") | .value')
     if [ -n "$PASS_ITEM_ID" ] && [ "$PASS_ITEM_ID" != "null" ]; then
-        PASSPHRASE=$(bw get item "$PASS_ITEM_ID" | jq -r '.login.password')
-        echo "$PRIVATE_KEY" | gpg --batch --pinentry-mode loopback \
-            --passphrase-fd 3 --import 3<<< "$PASSPHRASE"
+        PASSPHRASE=$(bw get item "$PASS_ITEM_ID" | yq -r '.login.password')
+        gpg --batch --pinentry-mode loopback \
+            --passphrase-fd 3 --import 3<<< "$PASSPHRASE" <<< "$PRIVATE_KEY"
         unset PASSPHRASE
     else
-        echo "$PRIVATE_KEY" | gpg --batch --import
+        gpg --batch --import <<< "$PRIVATE_KEY"
     fi
 
     echo "GPG key imported: $KEY_ID"
