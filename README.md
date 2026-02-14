@@ -52,7 +52,6 @@ bootstrap/
 ├── fish/.config/fish/         # Fish shell config (Stow package)
 ├── git/                       # .gitconfig.tmpl + .config/git/ignore
 ├── starship/.config/          # Starship prompt config
-├── gh/.config/gh/             # GitHub CLI config
 ├── claude/.claude/            # Claude Code settings
 └── misc/                      # .hushlogin
 ```
