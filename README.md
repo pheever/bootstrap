@@ -14,7 +14,7 @@ sudo apt-get update && sudo apt-get install -y curl git wslu
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 brew install gh
-gh auth login -h github.com -p ssh -w
+gh auth login -h github.com -p https
 git clone https://github.com/pheever/bootstrap.git ~/source/github.com/pheever/bootstrap
 cd ~/source/github.com/pheever/bootstrap
 bash bootstrap.sh
