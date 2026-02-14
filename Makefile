@@ -1,5 +1,7 @@
-REPO_DIR := $(shell cd "$(dirname $(realpath $(firstword $(MAKEFILE_LIST))))" && pwd)
-STOW_PACKAGES := fish git starship claude misc
+SHELL := /bin/bash
+export PATH := /home/linuxbrew/.linuxbrew/bin:$(PATH)
+
+STOW_PACKAGES := $(filter-out scripts,$(patsubst %/,%,$(wildcard */)))
 
 .PHONY: restow sync-brew stage pull status bootstrap sync
 
