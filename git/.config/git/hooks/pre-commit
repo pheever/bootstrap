@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v gitleaks &>/dev/null; then
+  echo "gitleaks not found – skipping secret scan"
+  exit 0
+fi
+
+gitleaks protect --staged --verbose

@@ -1,0 +1,10 @@
+[allowlist]
+  paths = [
+    '''\.gitleaks\.toml$''',
+  ]
+  regexTarget = "match"
+  regexes = [
+    '''__GPG_KEY_ID__''',
+    '''__GIT_EMAIL__''',
+    '''__GIT_NAME__''',
+  ]
