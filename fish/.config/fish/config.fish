@@ -1,4 +1,5 @@
 eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+fish_add_path $HOME/go/bin
 
 if status is-interactive
     # Commands to run in interactive sessions can go here
@@ -8,7 +9,7 @@ if status is-interactive
 
     # SSH agent via keychain (prompts for passphrase once per boot)
     if type -q keychain
-        keychain --quiet --agents ssh ~/.ssh/*_ed25519 2>/dev/null
+        keychain --quiet --agents ssh ~/.ssh/github_ed25519 2>/dev/null
         source ~/.keychain/(hostname)-fish
     end
 end

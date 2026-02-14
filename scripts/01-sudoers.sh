@@ -8,9 +8,19 @@ if [ -f "$SUDOERS_FILE" ]; then
     echo "Sudoers override already exists at $SUDOERS_FILE, skipping."
 else
     echo "Creating sudoers override for passwordless apt-get update/upgrade/autoremove/autoclean..."
-    sudo tee "$SUDOERS_FILE" > /dev/null <<EOF
-$CURRENT_USER ALL=(ALL) NOPASSWD: /usr/bin/apt-get update, /usr/bin/apt-get upgrade *, /usr/bin/apt-get autoremove *, /usr/bin/apt-get autoclean
+    TMPFILE=$(mktemp)
+    cat > "$TMPFILE" <<EOF
+$CURRENT_USER ALL=(ALL) NOPASSWD: /usr/bin/apt-get update, /usr/bin/apt-get upgrade -y, /usr/bin/apt-get autoremove -y, /usr/bin/apt-get autoclean
 EOF
-    sudo chmod 0440 "$SUDOERS_FILE"
-    echo "Done."
+    # Validate syntax before installing
+    if sudo visudo -cf "$TMPFILE"; then
+        sudo cp "$TMPFILE" "$SUDOERS_FILE"
+        sudo chmod 0440 "$SUDOERS_FILE"
+        echo "Done."
+    else
+        echo "ERROR: sudoers syntax validation failed."
+        rm -f "$TMPFILE"
+        exit 1
+    fi
+    rm -f "$TMPFILE"
 fi

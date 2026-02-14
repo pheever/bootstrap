@@ -1,4 +1,0 @@
-# This file contains fish universal variable definitions.
-# VERSION: 3.0
-SETUVAR __fish_initialized:4300
-SETUVAR fish_user_paths:/home/linuxbrew/\x2elinuxbrew/opt/node\x4024/bin\x1e/home/phivos/go/bin\x1e/home/linuxbrew/\x2elinuxbrew/bin
