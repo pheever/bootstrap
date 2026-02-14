@@ -33,15 +33,26 @@ fi
 echo "=== Interactive setup ==="
 echo ""
 
-# Bitwarden login — master password stays in memory only
-echo "Logging in to Bitwarden..."
+# Bitwarden — master password stays in memory only
+NEED_LOGIN=true
+if bw login --check &>/dev/null; then
+    NEED_LOGIN=false
+    echo "Already logged in to Bitwarden."
+fi
+
+if [ "$NEED_LOGIN" = true ]; then
+    read -rp "Bitwarden email: " BW_EMAIL
+fi
+
 for attempt in 1 2 3; do
     read -rsp "Bitwarden master password: " BW_MASTER_PASS
     echo ""
 
-    BW_SESSION=$(BW_MASTER_PASS="$BW_MASTER_PASS" bw login --passwordenv BW_MASTER_PASS --raw 2>/dev/null) \
-        || BW_SESSION=$(BW_MASTER_PASS="$BW_MASTER_PASS" bw unlock --passwordenv BW_MASTER_PASS --raw 2>/dev/null) \
-        || true
+    if [ "$NEED_LOGIN" = true ]; then
+        BW_SESSION=$(BW_MASTER_PASS="$BW_MASTER_PASS" bw login "$BW_EMAIL" --passwordenv BW_MASTER_PASS --raw 2>/dev/null) || true
+    else
+        BW_SESSION=$(BW_MASTER_PASS="$BW_MASTER_PASS" bw unlock --passwordenv BW_MASTER_PASS --raw 2>/dev/null) || true
+    fi
     unset BW_MASTER_PASS
 
     if [ -n "${BW_SESSION:-}" ]; then
