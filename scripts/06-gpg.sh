@@ -29,14 +29,14 @@ else
     echo "Retrieving GPG key from Bitwarden..."
     ITEM=$(bw get item "${BW_GPG_ITEM:-WSL GPG Key}")
 
-    PRIVATE_KEY=$(echo "$ITEM" | jq -r '.notes')
+    PRIVATE_KEY=$(echo "$ITEM" | jq -r '.fields[] | select(.name == "private_key") | .value')
     KEY_ID=$(echo "$ITEM" | jq -r '.fields[] | select(.name == "key_id") | .value')
 
     if [ -z "$PRIVATE_KEY" ] || [ -z "$KEY_ID" ]; then
         echo "ERROR: Could not retrieve GPG key from Bitwarden."
-        echo "Make sure a Secure Note named '${BW_GPG_ITEM:-WSL GPG Key}' exists with:"
-        echo "  - Private key (armored) in the Notes field"
-        echo "  - Custom text field 'key_id' with the key ID"
+        echo "Make sure an item named '${BW_GPG_ITEM:-WSL GPG Key}' exists with custom fields:"
+        echo "  - 'private_key' with the armored private key"
+        echo "  - 'key_id' with the key ID"
         exit 1
     fi
 
