@@ -53,11 +53,15 @@ else
 
     echo "GPG key imported: $KEY_ID"
 
-    # Upload public key to GitHub
+    # Upload public key to GitHub (skip if already present)
     if command -v gh &>/dev/null; then
-        echo "Uploading GPG key to GitHub..."
-        gpg --armor --export "$KEY_ID" | gh gpg-key add -
-        echo "GPG key uploaded to GitHub."
+        if gh gpg-key list | grep -q "$KEY_ID"; then
+            echo "GPG key already on GitHub."
+        else
+            echo "Uploading GPG key to GitHub..."
+            gpg --armor --export "$KEY_ID" | gh gpg-key add -
+            echo "GPG key uploaded to GitHub."
+        fi
     else
         echo "WARNING: gh CLI not found, skipping GitHub upload."
         echo "Run manually: gpg --armor --export $KEY_ID | gh gpg-key add -"
