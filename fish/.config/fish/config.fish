@@ -8,7 +8,8 @@ if status is-interactive
 
     # SSH agent via keychain (prompts for passphrase once per boot)
     if type -q keychain
-        keychain --eval --quiet github_ed25519 | source
+        keychain --quiet --agents ssh ~/.ssh/*_ed25519 2>/dev/null
+        source ~/.keychain/(hostname)-fish
     end
 end
 
