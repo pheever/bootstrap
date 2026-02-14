@@ -11,4 +11,8 @@ function update --description 'Update system and Homebrew packages'
     and brew update --auto-update
     and brew upgrade
     and brew autoremove
+
+    echo ""
+    echo "=== npm ==="
+    npm install -g npm@latest
 end
