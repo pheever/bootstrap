@@ -19,6 +19,8 @@ cd ~/source/github.com/pheever/bootstrap
 bash bootstrap.sh
 ```
 
+> **Note:** After the distro is first installed in Windows, restart it before running the bootstrap (close the terminal and reopen it).
+
 ## What It Does
 
 `bootstrap.sh` runs these scripts in order:
