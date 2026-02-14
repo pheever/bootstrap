@@ -27,7 +27,7 @@ pull: ## Pull latest changes and restow
 status: ## Show changed files
 	@git status --short
 
-sync: restow sync-brew stage ## Restow, dump Brewfile, and stage all changes
+sync: restow sync-brew $(if $(shell git status --porcelain),stage) ## Restow, dump Brewfile, and stage if dirty
 
 bootstrap: ## Run full bootstrap
 	bash bootstrap.sh
