@@ -1,0 +1,9 @@
+[azure]
+disabled = false
+style = "bold #0078D4"
+
+[gcloud]
+style = "bold #EA4335"
+
+[terraform]
+disabled = false

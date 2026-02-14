@@ -1,0 +1,12 @@
+# Manually-installed apt packages to restore on a fresh WSL
+# Install with: xargs -a apt-packages.txt sudo apt-get install -y
+build-essential
+curl
+dnsutils
+git
+gnupg
+google-cloud-cli
+python3-pip
+python3-venv
+stow
+wget

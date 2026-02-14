@@ -1,0 +1,16 @@
+# Default stow ignores
+RCS
+.+,v
+CVS
+\.\#.+
+\.cvsignore
+\.svn
+_darcs
+\.hg
+\.git
+\.gitignore
+\.gitmodules
+\.stow-local-ignore
+
+# Don't stow the template
+\.gitconfig\.tmpl
