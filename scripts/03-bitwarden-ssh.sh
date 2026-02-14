@@ -2,17 +2,11 @@
 set -euo pipefail
 
 SSH_DIR="$HOME/.ssh"
-SSH_KEY="$SSH_DIR/id_ed25519"
+SSH_KEY="$SSH_DIR/github_ed25519"
 
 if [ -f "$SSH_KEY" ]; then
     echo "SSH key already exists at $SSH_KEY, skipping."
     exit 0
-fi
-
-# Ensure bw CLI is available
-if ! command -v bw &>/dev/null; then
-    echo "Installing Bitwarden CLI..."
-    brew install bitwarden-cli
 fi
 
 # Check login status
@@ -50,6 +44,22 @@ echo "$PUBLIC_KEY" > "${SSH_KEY}.pub"
 chmod 644 "${SSH_KEY}.pub"
 
 echo "SSH keys restored successfully."
+
+# Retrieve passphrase via linked item and add key to keychain
+PASS_ITEM_ID=$(echo "$ITEM" | jq -r '.fields[] | select(.name == "passphrase_item_id") | .value')
+if [ -n "$PASS_ITEM_ID" ]; then
+    PASSPHRASE=$(bw get item "$PASS_ITEM_ID" | jq -r '.login.password')
+    if [ -n "$PASSPHRASE" ]; then
+        eval "$(keychain --eval --quiet)"
+        ASKPASS=$(mktemp /dev/shm/.ssh-askpass.XXXXXX)
+        printf '#!/bin/sh\necho "%s"\n' "$PASSPHRASE" > "$ASKPASS"
+        chmod 700 "$ASKPASS"
+        SSH_ASKPASS="$ASKPASS" SSH_ASKPASS_REQUIRE=force ssh-add "$SSH_KEY" </dev/null
+        rm -f "$ASKPASS"
+        unset PASSPHRASE
+        echo "SSH key added to keychain."
+    fi
+fi
 
 # Lock the vault
 bw lock

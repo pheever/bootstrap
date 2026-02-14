@@ -13,7 +13,7 @@ sudo apt-get update && sudo apt-get install -y curl git
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 brew install gh
-gh auth login
+gh auth login -h github.com -p ssh -w
 git clone https://github.com/pheever/bootstrap.git ~/source/github.com/pheever/bootstrap
 cd ~/source/github.com/pheever/bootstrap
 bash bootstrap.sh
@@ -31,11 +31,12 @@ bash bootstrap.sh
 | `01-sudoers.sh` | Passwordless sudo for `apt-get update/upgrade/autoremove/autoclean` |
 | `02-homebrew.sh` | Install Homebrew packages from `Brewfile` |
 | `03-bitwarden-ssh.sh` | Retrieve SSH keys from Bitwarden vault |
-| `04-stow.sh` | Symlink dotfiles into `$HOME` |
-| `05-gpg.sh` | Generate GPG key, render `.gitconfig`, upload key to GitHub |
-| `06-rust.sh` | Install rustup + stable toolchain |
-| `07-shell.sh` | Add fish to `/etc/shells`, set as default shell |
-| `08-post-install.sh` | Create directories, misc fixups |
+| `04-gh-auth.sh` | Authenticate GitHub CLI (device code flow, SSH protocol) |
+| `05-stow.sh` | Symlink dotfiles into `$HOME` |
+| `06-gpg.sh` | Generate GPG key, render `.gitconfig`, upload key to GitHub |
+| `07-rust.sh` | Install rustup + stable toolchain |
+| `08-shell.sh` | Add fish to `/etc/shells`, set as default shell |
+| `09-post-install.sh` | Create directories, misc fixups |
 
 All scripts are **idempotent** — safe to re-run individually or as a group.
 
@@ -46,7 +47,7 @@ bootstrap/
 ├── bootstrap.sh              # Main entry point
 ├── Brewfile                   # Homebrew packages
 ├── apt-packages.txt           # Manually-installed apt packages
-├── scripts/                   # Bootstrap phases (00-08)
+├── scripts/                   # Bootstrap phases (00-09)
 ├── fish/.config/fish/         # Fish shell config (Stow package)
 ├── git/                       # .gitconfig.tmpl + .config/git/ignore
 ├── starship/.config/          # Starship prompt config
@@ -57,14 +58,20 @@ bootstrap/
 
 ## Bitwarden SSH Key Setup (One-Time)
 
-Before running bootstrap on a new machine, store your SSH keys in Bitwarden:
+Before running bootstrap on a new machine, generate and store your SSH keys in Bitwarden:
+
+```bash
+ssh-keygen -t ed25519 -a 100 -C "your-email" -f ~/.ssh/github_ed25519
+```
 
 1. Create a **Secure Note** in Bitwarden named **"WSL SSH Key"**
 2. Paste the **private key** contents into the **Notes** field
 3. Add a **custom text field** named `public_key` with the **public key** contents
 4. Save the item
 
-The bootstrap script will retrieve these keys and write them to `~/.ssh/id_ed25519` and `~/.ssh/id_ed25519.pub`.
+The key should be **passphrase-protected** (`-a 100` increases KDF rounds). Keychain will prompt for the passphrase once per boot.
+
+The bootstrap script will retrieve these keys and write them to `~/.ssh/github_ed25519` and `~/.ssh/github_ed25519.pub`.
 
 ## Maintenance
 
@@ -92,5 +99,5 @@ git add Brewfile && git commit -m "add <package> to Brewfile" && git push
 - `gcloud` credentials — re-auth manually
 - `.docker/` — recreated by Docker Desktop
 - VS Code extensions — synced by Settings Sync
-- `gh/hosts.yml` — auth tokens (re-auth with `gh auth login`)
+- `gh/hosts.yml` — auth tokens (re-auth with `gh auth login -h github.com -p ssh -w`)
 - `.bashrc`, `.profile` — left as Ubuntu defaults

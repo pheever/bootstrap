@@ -5,6 +5,11 @@ if status is-interactive
     fzf --fish | source
     starship init fish | source
     source "$HOME/.cargo/env.fish"
+
+    # SSH agent via keychain (prompts for passphrase once per boot)
+    if type -q keychain
+        keychain --eval --quiet github_ed25519 | source
+    end
 end
 
 function fish_greeting
