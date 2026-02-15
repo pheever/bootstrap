@@ -5,6 +5,9 @@ if status is-interactive
     starship init fish | source
     source "$HOME/.cargo/env.fish"
 
+    # Ctrl+Backspace: delete previous token
+    bind ctrl-h backward-kill-word
+
     # Start SSH agent and load keys (prompts for passphrase once per boot)
     set -l keys
     for f in ~/.ssh/*_ed25519 ~/.ssh/*_ecdsa ~/.ssh/*_rsa ~/.ssh/*_dsa
