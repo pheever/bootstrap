@@ -37,7 +37,8 @@ The bootstrap runs in three phases:
 | `06-gpg.sh` | Import GPG key from Bitwarden, render `.gitconfig`, upload key to GitHub |
 | `07-rust.sh` | Install rustup + stable toolchain |
 | `08-shell.sh` | Add fish to `/etc/shells`, set as default shell |
-| `09-post-install.sh` | Create directories, install CLI tools |
+| `09-post-install.sh` | Create directories, set permissions |
+| `10-node.sh` | Install Node.js LTS via fnm + global npm packages |
 
 All scripts are **idempotent** — safe to re-run individually or as a group.
 
