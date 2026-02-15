@@ -105,6 +105,7 @@ unset BW_SESSION
 run_script "$SCRIPT_DIR/scripts/07-rust.sh"
 run_script "$SCRIPT_DIR/scripts/08-shell.sh"
 run_script "$SCRIPT_DIR/scripts/09-post-install.sh"
+run_script "$SCRIPT_DIR/scripts/10-docker.sh"
 
 echo "=== Bootstrap complete ==="
 
