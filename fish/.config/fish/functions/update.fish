@@ -7,10 +7,10 @@ function update --description 'Update system and Homebrew packages'
 
     echo ""
     echo "=== brew ==="
-    brew upgrade --casks
-    and brew update --auto-update
-    and brew upgrade
-    and brew autoremove
+    HOMEBREW_NO_ENV_HINTS=1 brew upgrade --casks
+    and HOMEBREW_NO_ENV_HINTS=1 brew update --auto-update
+    and HOMEBREW_NO_ENV_HINTS=1 brew upgrade
+    and HOMEBREW_NO_ENV_HINTS=1 brew autoremove
 
     echo ""
     echo "=== npm ==="

@@ -10,7 +10,7 @@
 
 set --global fish_color_autosuggestion brblack
 set --global fish_color_cancel -r
-set --global fish_color_command normal
+set --global fish_color_command green
 set --global fish_color_comment red
 set --global fish_color_cwd green
 set --global fish_color_cwd_root red
@@ -22,7 +22,7 @@ set --global fish_color_host normal
 set --global fish_color_host_remote yellow
 set --global fish_color_normal normal
 set --global fish_color_operator brcyan
-set --global fish_color_param FF8C00
+set --global fish_color_param purple
 set --global fish_color_quote yellow
 set --global fish_color_redirection cyan --bold
 set --global fish_color_search_match white --background=brblack
