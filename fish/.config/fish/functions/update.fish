@@ -14,5 +14,5 @@ function update --description 'Update system and Homebrew packages'
 
     echo ""
     echo "=== npm ==="
-    npm install -g npm@latest
+    npm install -g --fund false npm@latest
 end

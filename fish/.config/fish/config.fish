@@ -1,4 +1,5 @@
 eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv fish)
+fish_add_path (brew --prefix node@24)/bin
 
 if status is-interactive
     fzf --fish | source
