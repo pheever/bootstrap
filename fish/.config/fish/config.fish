@@ -11,7 +11,7 @@ if status is-interactive
         test -f "$f"; and set -a keys $f
     end
     if count $keys >/dev/null
-        keychain --eval --quiet $keys | source
+        keychain --eval $keys | source
     end
 end
 
