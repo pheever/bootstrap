@@ -1,6 +1,7 @@
 eval (/home/linuxbrew/.linuxbrew/bin/brew shellenv fish)
 
 fnm env --use-on-cd | source
+set -gx GOPATH $HOME/source/go
 
 if status is-interactive
     fzf --fish | source
