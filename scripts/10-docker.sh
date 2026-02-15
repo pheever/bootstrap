@@ -29,13 +29,15 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 
 # Do NOT enable Docker on startup — user starts manually
 sudo systemctl disable docker.service
+sudo systemctl disable docker.socket
 sudo systemctl disable containerd.service
 
-# Add current user to docker group (takes effect on next login)
+# Add current user to docker group
 if ! groups "$USER" | grep -q '\bdocker\b'; then
     sudo usermod -aG docker "$USER"
-    echo "Added $USER to docker group (takes effect on next login)."
+    echo "Added $USER to docker group."
+    echo "Run 'wsl --shutdown' from PowerShell and reopen WSL for group membership to take effect."
 fi
 
 echo "Docker installed: $(docker --version)"
-echo "Start manually with: sudo systemctl start docker"
+echo "Start with: docker-start | Stop with: docker-stop"
